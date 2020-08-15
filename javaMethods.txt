@@ -1,0 +1,236 @@
+
+My rule of thumb when it comes to binary search:
+
+Include ALL possible answers when initialize lo & hi
+Don't overflow the mid calculation
+Shrink boundary using a logic that will exclude mid
+Avoid infinity loop by picking the correct mid and shrinking logic
+Always think of the case when there are 2 elements left
+
+ 
+Integer.MIN_VALUE
+integer.MAX_VALUE
+
+=================================
+char to integer:
+---------------
+char c;
+Character.getNumericValue(c); 
+------------------------------------
+char c='1';  
+int a=Integer.parseInt(String.valueOf(c)); 
+------------------------------------
+
+===================================
+
+String to Int: Integer.parseInt(String obj)
+String to Integer Instance= Integer.valueOf(String obj)
+
+
+String methods:
+===============================================
+String extends Object implements Serializable, Comparable<String>, CharSequence
+
+Constructor:
+	String obj = "abc";
+
+	char[] arrayobj = {'a','b'};
+	String obj = new String(arrayobj);
+	
+	String obj = new String(StringBuffer obj)
+	String obj = new String(StringBuilder obj)
+
+Methods:
+	char charAt(int Index)
+	int CompareTo(String obj) //returns 0 Str is equal to Passed string parameter, '<0' if Str<passed str arg  and >0 n other case
+	int CompareToIgnoreCase(String obj)
+	boolean isEmpty()
+	string substring(int begIndex) //Note that function name has all lower characters
+	string substring(int begIndex.int endIndex)
+	String[] split​(String regex) //Note: on return type
+	string strip() //Leading and trailing white spaves removed
+	char[] toCharArray()
+	String valueOf(int) //returns the string representation of the int
+	String valueOf(obj) //returns String representation of the object
+	
+===============================================
+StringBuffer extends object implements Serializable, Comparable<StringBuffer>, CharSequence 
+
+Thread safe mutable sequence of characters
+
+StringBuilder extends object implements Serializable, Comparable<StringBuffer>, CharSequence
+Not a thread safe class
+
+constructor:
+	StringBuilder()
+	StringBuilder(int capacity)
+	StringBuilder(charSequence )
+	StringBuilder(string obj)
+	// NO constructor with ARRAY
+	
+Methods: 
+	StringBuilder append(String obj)
+	StringBuilder append(StringBuffer obj)
+	//Note There is no append function on the StringBuilder arg !!!!!!! y???
+	StringBuilder append(int i) //Appends String representation,Similar function exist for all primitive types and object
+	StringBuilder insert(int offset, String strObj)
+	StringBuilder insert​(int offset, char[] char_aray)//insert the specified array
+	StringBuilder insert​(int index, char[] str, int offset, int len)
+	int length()
+	char charAt()
+	string substring(int begIndex) //Note that function name has all lower characters
+	string substring(int begIndex,int endIndex) //Note that function name has all lower characters
+	StringBuilder setCharAt(int index,char ch)
+	
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+								Collections						|		MAP
+																|
+			SET				LIST		QUEUE	DEQUEUE			|    SORTED MAP
+																|
+		SORTED SET												|
+
+
+Collection Methods:
+	
+	int size()
+	boolean isEmpty()
+	boolean contains(object t)
+	boolean add(obj element)
+	boolean remove(obj element)
+	Iterator<E> iterator()
+	toArray()
+	
+	Aggregation methods:
+	boolean containsAll(collection<?> elem) //checks wether the given elements are present in the collection
+	boolean addAll(collection<?> elem)
+	boolean removeAll(collection<?> elem)//removes given elements present in the collection
+	boolean clear()//removes all the elements
+	
+	Traversing the collections:
+	==========================
+		via streams (not mutative operations performed will not reflect on the container values):
+		======================================================================================
+		collectionsObj.stream()
+					  .filter(e.getColor() == 'RED')
+					  .forEach(System.out.println(e.toString()))
+		collectionsObj.parallelStream()
+					  .filter(e.getColor() == 'RED')
+					  .forEach(System.out.println(e.toString()))
+			
+		For each construct:
+		==================
+		for(obj o: collectionobj){
+			System.out.println('testing the values')
+		}
+		
+		via iterator:
+			for(iterator<?> obj= c.iterator; c.hasNext();){
+				 
+			}
+	
+		
+			
+	Object[] a = c.toArray(); //Dumps all the elements of a collection in to the Array
+    // Ignore for now there is a similar func with the argument	
+	
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+SET :
+	Implements all the methods of Collections interface by having the property as no dups
+	1) HashSet No order is guaranteed
+	2) TreeSet Orderingis based on the values implemented by red black tree(AVL tree  can also work)
+	3) LinkedHashSet Insertion order is guaranteed (UNAWARE OF THE IMPLEMENTATION)
+	
+	//Aggregation operations are well suited on the SETS, The same operations can be done via Streams as well
+	//consider that you havesets s1 and s2 and  below are the ops for UNION , INTERSECTION , DIFFERENCE
+	set<type> union = new HashSet(s1);
+	union.addAll(s2);
+	
+	Set<t> intersection = new HashSet(s1);
+	s1.retainAll(s2)
+	
+	Set<t> difference = new HashSe(s1);
+	s1.removeAll(s2)
+	
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+List:
+	Positional Access methods:
+	get(int pos),set(<e> Elem, int pos),add(),addAll(),remove()
+	Search Methods:
+		indexOf() //first occurence of the given valueOf
+		lastIndexOf //Last occurence of the given val
+	Iteration: using Iterator() object(Iterator Methods are next,hasNext, remove)
+	ListIterator extends Iterator class ,  previous() and hasPrevious() //for the reverse iteration
+	Constructor for ListIterator():
+	------------------------------
+	Intuitively speaking, the cursor is always between two elements to understand next() and hasNext()
+		1) Noarg next will point to start element
+		2) with arg next will point to the index given to constructor.(arg value List.size()-1 sets to last element, ther by previous and hasPrevious() are used for the iterations)
+	Rangeview: sublist(int fromIndex, int toIndex) method
+	
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+public interface Queue<E> extends Collection<E> {
+    E element();
+    boolean offer(E e);
+    E peek();
+    E poll();
+    E remove();
+}
+
+Each Queue method exists in two forms: 
+	(1) one throws an exception if the operation fails, and 
+		- add(T element)
+		- remove()
+		- element() //Similar to peek except that it throws exception
+	(2) the other returns a special value if the operation fails (either null or false, depending on the operation).
+		- offer(T element)
+		- peek()
+		- poll()
+
+Dequeue Interface
+	1) one throws an exception if the operation fails, and 
+		- addfirst(T element)
+		- addLast(T element)
+		- removeFirst()
+		- removeLast()
+		- elementFirst() //Similar to peek except that it throws exception
+		- elementLast() //Similar to peek except that it throws exception
+	(2) the other returns a special value if the operation fails (either null or false, depending on the operation).
+		- offerFirst(T element)
+		- peekFirst()
+		- pollFirst()
+		- offerLast(T element)
+		- peekLast()
+
+		- pollLast()
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Map interface:
+	int size()
+	boolean isEmpty()
+	put(T key,T val)
+	object get(T key)
+	boolean containsKey(T Key)
+	boolean containsValue(T value)
+	Set<Map.Entry<k,v>> entryset()
+	void remove(key)
+	boolean remove(key, value) //removes the key if only if it is currently mapped to the specified value
+	booelan replace(k,value) //the specified value for the key is replaced
+	Other Bulk operations exists for MAp 
+	============================================
+	Map.Entry<KeyType, ValType> e : Available methods for Map.Entry are 
+	e.getKey()
+	e.getValue()
+	============================================
+
+
+
+(obj instaceof classname) returns boolean to check wether an obj is an instance of the className. 
+Note : No Caps, This seems to be an opertor in java
+
+	
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+PriorityQueue extends AbstractQueue,implements Queue
+PriorityQueue implements Ascending order for integers and Dictionary order for strings
